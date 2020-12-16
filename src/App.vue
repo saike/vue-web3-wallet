@@ -1,28 +1,44 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-main>
+      <v-container fill-height fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="auto">
+            <v-card>
+              <v-card-text v-if="!address">
+                <MetaMaskAuth @authorize="address = $event"/>
+              </v-card-text>
+              <v-card-text v-else>
+
+                <v-flex class="subtitle-1 mt-3">Address: {{ address }}</v-flex>
+
+                <v-divider class="my-3"></v-divider>
+
+                <Balance :address="address"/>
+
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MetaMaskAuth from "./components/MetaMaskAuth";
+import Balance from "./components/Balance";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  name: "App",
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: {
+    MetaMaskAuth,
+    Balance
+  },
+
+  data: () => ({
+    address: null
+  }),
+};
+</script>
