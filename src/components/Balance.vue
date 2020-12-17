@@ -4,16 +4,22 @@
 
     <v-flex class="subtitle-2">Balances</v-flex>
 
-    <v-flex v-if="balance">
+    <v-flex>
 
       <v-list>
-        <v-list-item>
+        <!-- <v-list-item>
           <v-list-item-content>ETH</v-list-item-content>
           <v-list-item-content>{{ balance }}</v-list-item-content>
-        </v-list-item>
+          <v-list-item-action>
+            <v-btn small @click="$emit('select', null)">Transactions</v-btn>
+          </v-list-item-action>
+        </v-list-item> -->
         <v-list-item v-for="coin in coins" :key="coin.contract">
           <v-list-item-content>{{ coin.name }}</v-list-item-content>
           <v-list-item-content>{{ coin.balance }}</v-list-item-content>
+          <v-list-item-action>
+            <v-btn small @click="$emit('select', coin)">Transactions</v-btn>
+          </v-list-item-action>
         </v-list-item>
       </v-list>
 
@@ -49,8 +55,14 @@ export default {
   props: [ 'address' ],
   data(){
     return {
-      balance: null,
-      coins: [],
+      // balance: null,
+      coins: [
+        {
+          name: 'Etherium',
+          balance: 0,
+          contract: null
+        }
+      ],
       coin: false,
       error: false
     }
@@ -75,10 +87,8 @@ export default {
         
         var balance = await this.$web3.eth.getBalance(this.address); //Will give value in.
         console.log(balance);
-        balance = this.$web3.utils.fromWei(balance);
+        this.coins[0].balance = this.$web3.utils.fromWei(balance);
         // balance = this.$web3.utils.toWei(balance);
-
-        this.balance = balance;
 
       }
       catch (error) {

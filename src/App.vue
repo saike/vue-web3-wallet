@@ -14,7 +14,11 @@
 
                 <v-divider class="my-3"></v-divider>
 
-                <Balance :address="address"/>
+                <Balance :address="address" @select="token = $event"/>
+
+                <v-divider class="my-3"></v-divider>
+
+                <Transactions v-if="token" :token="token" :address="address"/>
 
               </v-card-text>
             </v-card>
@@ -28,17 +32,20 @@
 <script>
 import MetaMaskAuth from "./components/MetaMaskAuth";
 import Balance from "./components/Balance";
+import Transactions from "./components/Transactions";
 
 export default {
   name: "App",
 
   components: {
     MetaMaskAuth,
-    Balance
+    Balance,
+    Transactions
   },
 
   data: () => ({
-    address: null
+    address: null,
+    token: null
   }),
 };
 </script>
